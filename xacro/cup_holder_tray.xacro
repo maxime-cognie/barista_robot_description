@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="barista_bot">
+
+  <xacro:macro name="cup_holder_tray">
+    <!-- cup holder tray-->
+    <visual>
+      <origin xyz="0 0 0.3425" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.090" radius="0.320"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0.3425" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.090" radius="0.320"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="1"/>
+      <origin xyz="0 0 0.3425" rpy="0 0 0"/>
+      <inertia ixx="0.026275" ixy="0" ixz="0" iyy="0.026275" iyz="0" izz="0.0512"/>
+    </inertial>
+  </xacro:macro>
+</robot>

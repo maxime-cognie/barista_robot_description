@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="barista_bot">
+
+  <xacro:include filename="$(find barista_robot_description)/xacro/standoff.xacro"/>
+  <xacro:include filename="$(find barista_robot_description)/xacro/cup_holder_tray.xacro"/>
+  <xacro:include filename="$(find barista_robot_description)/xacro/wheel.xacro"/>
+  <xacro:include filename="$(find barista_robot_description)/xacro/caster_wheel.xacro"/>
+
+  <xacro:property name="include_laser" value="true"/>
+
+  <xacro:include filename="$(find barista_robot_description)/xacro/gazebo.xacro"/>
+
+  <xacro:property name="chassis_length" value="0.155"/>
+  <xacro:property name="chassis_radius" value="0.356"/>
+  <xacro:property name="chassis_mass" value="5"/>
+
+  <material name="grey">
+    <color rgba="0.6 0.6 0.6 1"/>
+  </material>
+
+  <material name="black">
+    <color rgba="0.1 0.1 0.1 1"/>
+  </material>
+
+  <material name="blue">
+    <color rgba="0.2 0.1 0.8 1"/>
+  </material>
+
+  <link name="base_link">
+  </link>
+
+  <joint name="base_link_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0" />
+    <parent link="base_link" />
+    <child link="chassis" />
+  </joint>
+
+  <link name="chassis">
+    <!-- body -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${chassis_length}" radius="${chassis_radius}"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${chassis_length}" radius="${chassis_radius}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="${chassis_mass}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.16843041666666667" ixy="0" ixz="0" iyy="0.16843041666666667" iyz="0" izz="0.31683999999999996"/>
+    </inertial>
+
+    <xacro:standoff pos_x="0.050" pos_y="0.250" pos_z="0.1875"/>
+    <xacro:standoff pos_x="-0.050" pos_y="0.250" pos_z="0.1875"/>
+    <xacro:standoff pos_x="0.050" pos_y="-0.250" pos_z="0.1875"/>
+    <xacro:standoff pos_x="-0.050" pos_y="-0.250" pos_z="0.1875"/>
+
+    <xacro:cup_holder_tray />
+  </link>
+  
+  <xacro:caster_wheel caster_wheel_name="front_caster_wheel" side="1"/>
+  <xacro:caster_wheel caster_wheel_name="back_caster_wheel" side="-1"/>
+
+  <xacro:wheel wheel_name="left_wheel" side="1"/>
+  <xacro:wheel wheel_name="right_wheel" side="-1"/>
+
+  <xacro:if value="${include_laser}">
+    <joint name="hokuyo_laser_joint" type="fixed">
+      <origin xyz="0.3 0 0.0775" rpy="0 0 0"/>
+      <parent link="chassis"/>
+      <child link="hokuyo_laser"/>
+    </joint>
+
+    <link name="hokuyo_laser">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://barista_robot_description/meshes/hokuyo_urg_04lx.dae" scale="1.0 1.0 1.0"/>
+        </geometry>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0.035" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.045 0.045 0.070"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <mass value="0.01"/>
+        <origin xyz="0 0 0.035" rpy="0 0 0"/>
+        <inertia ixx="0.000005771" ixy="0" ixz="0" iyy="0.000005771" iyz="0" izz="0.00000338"/>
+      </inertial>
+    </link>
+
+    <joint name="laser_scan_frame_joint" type="fixed">
+      <origin xyz="0 0 0.06" rpy="0 0 0"/>
+      <parent link="hokuyo_laser"/>
+      <child link="laser_scan_frame"/>
+    </joint>
+
+    <link name="laser_scan_frame">
+    </link>
+  </xacro:if>
+
+</robot>

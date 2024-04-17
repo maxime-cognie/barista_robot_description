@@ -5,15 +5,14 @@ from launch import LaunchDescription
 from launch.actions import ExecuteProcess, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
-from launch.substitutions import Command
+
+import xacro
 
 def generate_launch_description():
 
     pkg_description_name = "barista_robot_description"
+    share_dir = get_package_share_directory(pkg_description_name)
     install_dir = get_package_prefix(pkg_description_name)
-
-    urdf_file = 'barista_robot_model.urdf'
-    robot_desc_path = os.path.join(get_package_share_directory(pkg_description_name), "urdf", urdf_file)
 
     # This is to find the models inside the models folder in package_name
     if 'GAZEBO_MODEL_PATH' in os.environ:
@@ -31,15 +30,21 @@ def generate_launch_description():
 
     print("GAZEBO MODELS PATH=="+str(os.environ["GAZEBO_MODEL_PATH"]))
     print("GAZEBO PLUGINS PATH=="+str(os.environ["GAZEBO_PLUGIN_PATH"]))
+    # robot_model_path = os.path.join(get_package_share_directory(package_description))
+
+    xacro_file = os.path.join(share_dir, 'xacro', 'barista_robot_model.urdf.xacro')
+
+    # convert XACRO file into URDF
+    doc = xacro.parse(open(xacro_file))
+    xacro.process_doc(doc)
+    params = {'use_sim_time': True, 'robot_description': doc.toxml()}
 
     # Robot State Publisher
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        name='robot_state_publisher_node',
-        emulate_tty=True,
-        parameters=[{'use_sim_time': True, 'robot_description': Command(['xacro ', robot_desc_path])}],
-        output="screen"
+        output='screen',
+        parameters=[params]
     )
 
     gazebo = IncludeLaunchDescription(
