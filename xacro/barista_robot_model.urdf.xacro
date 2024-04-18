@@ -11,7 +11,7 @@
   <xacro:include filename="$(find barista_robot_description)/xacro/gazebo.xacro"/>
 
   <xacro:property name="chassis_length" value="0.155"/>
-  <xacro:property name="chassis_radius" value="0.356"/>
+  <xacro:property name="chassis_radius" value="0.178"/>
   <xacro:property name="chassis_mass" value="5"/>
 
   <material name="grey">
@@ -24,6 +24,10 @@
 
   <material name="blue">
     <color rgba="0.2 0.1 0.8 1"/>
+  </material>
+
+  <material name="red">
+    <color rgba="0.8 0.1 0.2 1"/>
   </material>
 
   <link name="base_link">
@@ -42,7 +46,7 @@
       <geometry>
         <cylinder length="${chassis_length}" radius="${chassis_radius}"/>
       </geometry>
-      <material name="grey"/>
+      <material name="blue"/>
     </visual>
 
     <collision>
@@ -58,13 +62,17 @@
       <inertia ixx="0.16843041666666667" ixy="0" ixz="0" iyy="0.16843041666666667" iyz="0" izz="0.31683999999999996"/>
     </inertial>
 
-    <xacro:standoff pos_x="0.050" pos_y="0.250" pos_z="0.1875"/>
-    <xacro:standoff pos_x="-0.050" pos_y="0.250" pos_z="0.1875"/>
-    <xacro:standoff pos_x="0.050" pos_y="-0.250" pos_z="0.1875"/>
-    <xacro:standoff pos_x="-0.050" pos_y="-0.250" pos_z="0.1875"/>
+    <xacro:standoff pos_x="0.025" pos_y="0.100" pos_z="0.1875"/>
+    <xacro:standoff pos_x="-0.025" pos_y="0.100" pos_z="0.1875"/>
+    <xacro:standoff pos_x="0.025" pos_y="-0.100" pos_z="0.1875"/>
+    <xacro:standoff pos_x="-0.025" pos_y="-0.100" pos_z="0.1875"/>
 
     <xacro:cup_holder_tray />
   </link>
+
+  <gazebo reference="chassis">
+    <material>Gazebo/Blue</material>
+  </gazebo>
   
   <xacro:caster_wheel caster_wheel_name="front_caster_wheel" side="1"/>
   <xacro:caster_wheel caster_wheel_name="back_caster_wheel" side="-1"/>
@@ -74,7 +82,7 @@
 
   <xacro:if value="${include_laser}">
     <joint name="hokuyo_laser_joint" type="fixed">
-      <origin xyz="0.3 0 0.0775" rpy="0 0 0"/>
+      <origin xyz="0.15 0 0.0775" rpy="0 0 0"/>
       <parent link="chassis"/>
       <child link="hokuyo_laser"/>
     </joint>
@@ -85,6 +93,7 @@
         <geometry>
           <mesh filename="package://barista_robot_description/meshes/hokuyo_urg_04lx.dae" scale="1.0 1.0 1.0"/>
         </geometry>
+        <material name="black"/>
       </visual>
 
       <collision>

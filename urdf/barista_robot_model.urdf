@@ -200,7 +200,7 @@
       <geometry>
         <sphere radius="0.0352"/>
       </geometry>
-      <material name="Red"/>
+      <material name="red"/>
     </visual>
 
     <collision>

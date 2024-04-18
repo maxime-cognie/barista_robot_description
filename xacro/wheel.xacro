@@ -9,7 +9,7 @@
     "side" 1 for left wheel, -1 for right wheel -->
 
     <joint name="${wheel_name}_joint" type="continuous">
-      <origin xyz="0 ${side * 0.25} -0.0775" rpy="0 0 0"/>
+      <origin xyz="0 ${side * 0.125} -0.0775" rpy="0 0 0"/>
       <parent link="${ref_frame}"/>
       <child link="${wheel_name}"/>
       <axis xyz="0 1 0" />

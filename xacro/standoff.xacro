@@ -5,14 +5,14 @@
     <visual>
       <origin xyz="${pos_x} ${pos_y} ${pos_z}" rpy="0 0 0"/>
       <geometry>
-        <cylinder length="0.220" radius="0.020"/>
+        <cylinder length="0.220" radius="0.010"/>
       </geometry>
     </visual>
 
     <collision>
       <origin xyz="${pos_x} ${pos_y} ${pos_z}" rpy="0 0 0"/>
       <geometry>
-        <cylinder length="0.220" radius="0.020"/>
+        <cylinder length="0.220" radius="0.010"/>
       </geometry>
     </collision>
     

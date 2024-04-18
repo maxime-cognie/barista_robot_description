@@ -6,14 +6,14 @@
     <visual>
       <origin xyz="0 0 0.3425" rpy="0 0 0"/>
       <geometry>
-        <cylinder length="0.090" radius="0.320"/>
+        <cylinder length="0.090" radius="0.160"/>
       </geometry>
     </visual>
 
     <collision>
       <origin xyz="0 0 0.3425" rpy="0 0 0"/>
       <geometry>
-        <cylinder length="0.090" radius="0.320"/>
+        <cylinder length="0.090" radius="0.160"/>
       </geometry>
     </collision>
 

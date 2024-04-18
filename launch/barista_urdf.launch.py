@@ -42,9 +42,10 @@ def generate_launch_description():
         output="screen"
     )
 
+
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
+            get_package_share_directory('gazebo_ros'), 'launch'), '/empty_world.launch.py']),
         launch_arguments={"verbose": "false", 'pause': 'false'}.items(),
     )
 
