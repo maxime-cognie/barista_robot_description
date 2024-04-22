@@ -14,6 +14,8 @@ def generate_launch_description():
     share_dir = get_package_share_directory(pkg_description_name)
     install_dir = get_package_prefix(pkg_description_name)
 
+    robot_name = 'barista_bot'
+
     # This is to find the models inside the models folder in package_name
     if 'GAZEBO_MODEL_PATH' in os.environ:
         os.environ['GAZEBO_MODEL_PATH'] = os.environ['GAZEBO_MODEL_PATH'] + \
@@ -32,16 +34,16 @@ def generate_launch_description():
     print("GAZEBO PLUGINS PATH=="+str(os.environ["GAZEBO_PLUGIN_PATH"]))
     # robot_model_path = os.path.join(get_package_share_directory(package_description))
 
-    xacro_file = os.path.join(share_dir, 'xacro', 'barista_robot_model.urdf.xacro')
-
     # convert XACRO file into URDF
-    doc = xacro.parse(open(xacro_file))
-    xacro.process_doc(doc)
-    params = {'use_sim_time': True, 'robot_description': doc.toxml()}
+    xacro_file = os.path.join(share_dir, 'xacro', 'barista_robot_model.urdf.xacro')
+    doc = xacro.process_file(xacro_file, mappings={ "robot_name": robot_name})
+
+    params = {'use_sim_time': True, 'robot_description': doc.toxml(), 'mappings': {"robot_name": robot_name}, 'frame_prefix': '/' + robot_name + '/'}
 
     # Robot State Publisher
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
+        namespace=robot_name,
         executable='robot_state_publisher',
         output='screen',
         parameters=[params]
@@ -55,7 +57,7 @@ def generate_launch_description():
 
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                     arguments=['-entity', 'barista_bot', '-x', '1.0', '-y', '1.0', '-z', '0.2',
-                                '-topic', 'robot_description'],
+                                '-topic', '/' + robot_name + '/' + 'robot_description'],
                     output='screen')
                     
     # RVIZ Configuration
