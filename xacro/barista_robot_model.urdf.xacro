@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="barista_bot">
 
-  <xacro:arg name="robot_name" default="barista_bot"/>
-  <xacro:property name="robot_name" value="$(arg robot_name)"/>
+  <xacro:arg name="r_n" default="barista_bot"/>
+  <xacro:property name="robot_name" value="$(arg r_n)"/>
+  <xacro:property name="morty" value="morty"/>
 
   <xacro:include filename="$(find barista_robot_description)/xacro/standoff.xacro"/>
   <xacro:include filename="$(find barista_robot_description)/xacro/cup_holder_tray.xacro"/>
@@ -49,7 +50,12 @@
       <geometry>
         <cylinder length="${chassis_length}" radius="${chassis_radius}"/>
       </geometry>
+      <xacro:if value="${robot_name == morty}">
       <material name="blue"/>
+      </xacro:if>
+      <xacro:unless value="${robot_name == morty}">
+      <material name="red"/>
+      </xacro:unless>
     </visual>
 
     <collision>
@@ -73,9 +79,16 @@
     <xacro:cup_holder_tray />
   </link>
 
+  <xacro:if value="${robot_name == morty}">
   <gazebo reference="chassis">
     <material>Gazebo/Blue</material>
   </gazebo>
+  </xacro:if>
+  <xacro:unless value="${robot_name == morty}">
+  <gazebo reference="chassis">
+    <material>Gazebo/Red</material>
+  </gazebo>
+  </xacro:unless>
   
   <xacro:caster_wheel caster_wheel_name="front_caster_wheel" side="1"/>
   <xacro:caster_wheel caster_wheel_name="back_caster_wheel" side="-1"/>

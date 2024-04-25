@@ -38,8 +38,8 @@ def generate_launch_description():
     xacro_file = os.path.join(share_dir, 'xacro', 'barista_robot_model.urdf.xacro')
 
     # convert XACRO file into URDF
-    doc_robot_rick = xacro.process_file(xacro_file, mappings={"robot_name": robot_name_rick})
-    doc_robot_morty = xacro.process_file(xacro_file, mappings={"robot_name": robot_name_morty})    
+    doc_robot_rick = xacro.process_file(xacro_file, mappings={"r_n": robot_name_rick})
+    doc_robot_morty = xacro.process_file(xacro_file, mappings={"r_n": robot_name_morty})    
     params_robot_rick = {'use_sim_time': True, 'robot_description': doc_robot_rick.toxml(), 'frame_prefix': '/' + robot_name_rick + '/'}
     params_robot_morty = {'use_sim_time': True, 'robot_description': doc_robot_morty.toxml(), 'frame_prefix': '/' + robot_name_morty + '/'}
 
